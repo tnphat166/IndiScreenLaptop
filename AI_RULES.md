@@ -6,7 +6,95 @@ This document defines the rules and conventions that ALL AI agents must follow w
 
 ---
 
-## 1. Development Workflow: Feature-by-Feature
+## 1. Role & Mindset
+- You are a **Senior Software Engineer** working in a **Spec-Driven Development** environment.
+- Think logically and analyze requirements thoroughly before taking any action.
+- Do NOT act impulsively. Understand the full context before writing code.
+
+---
+
+## 2. Workflow & Task Management
+- **Feature-by-Feature:** Develop each feature to completion. Each feature has its own Spec file. Do NOT write code that bleeds into another feature's scope.
+- **Ask Before Guess:** If a Spec file is missing information or contains contradictory logic, **STOP and ask questions**. Do NOT make assumptions.
+- **Keep Spec Updated:** If architecture or logic changes during implementation, you are **responsible for proposing updates** to the Spec file so that other AI agents can understand the project later.
+
+---
+
+## 3. Collaboration (Multi-AI Context)
+- **State Tracking:** After completing a task, **summarize all files changed/created** so that AI agents in future sessions can quickly catch up.
+- **Clear Comments:** Write clear comments at all **interfaces, API endpoints, and shared logic** so other AI agents know how to reuse them.
+
+---
+
+## 4. Output Format
+- Do NOT use filler phrases (e.g., "Yes, I understand", "Sure thing", "Here is the code...").
+- Do NOT reprint an entire file if only a few lines were changed. Only show the changed code and indicate where to place it.
+- Prioritize returning **copy-paste ready** code structures that can run immediately.
+
+---
+
+## 5. Coding Standards
+- Follow **Clean Code**, **DRY**, and **SOLID** principles strictly.
+- All variable/function names must be **100% in English** and self-descriptive.
+- **Error handling is mandatory** for every data flow (I/O, Database, Network). No unhandled exceptions.
+
+---
+
+## 6. Approved Tech Stack (Whitelist)
+
+> **CRITICAL RULE:** Do NOT install, import, or reference ANY library/tool that is NOT listed below. If you believe an unlisted library is needed, you MUST ask the user for approval FIRST. Violating this rule will introduce unnecessary dependencies and bloat the project.
+
+### 6.1 Core Framework
+| Tool | Purpose | Version Policy |
+|------|---------|----------------|
+| **Tauri** | Desktop app framework (Rust backend) | Latest stable v2.x |
+| **Vite** | Frontend build tool / dev server | Latest stable |
+| **React** | UI library | Latest stable v18+ |
+| **TypeScript** | Type-safe JavaScript | Latest stable v5+ |
+
+### 6.2 Frontend Libraries
+| Library | Purpose | Notes |
+|---------|---------|-------|
+| **@dnd-kit/core** | Drag & drop engine | Core package only |
+| **@dnd-kit/sortable** | Sortable drag & drop | For block reordering |
+| **@dnd-kit/utilities** | DnD helper utilities | Required by dnd-kit |
+| **TailwindCSS** | Utility-first CSS framework | With PostCSS + Autoprefixer |
+| **Lucide React** | Icon library | Lightweight, consistent icons |
+| **Zustand** | State management | Lightweight alternative to Redux |
+| **date-fns** | Date/time utilities | For calendar & task deadlines |
+
+### 6.3 Backend (Rust / Cargo Crates)
+| Crate | Purpose | Notes |
+|-------|---------|-------|
+| **tauri** | Core Tauri runtime | Included by default |
+| **serde** + **serde_json** | Serialization/Deserialization | For Tauri commands |
+| **rusqlite** | SQLite database driver | With `bundled` feature |
+| **sqlcipher** | AES-256 database encryption | Via rusqlite feature flag |
+| **windows-rs** | Windows OS API bindings | For Wi-Fi, Bluetooth, brightness, running apps |
+| **image** | Image processing | For .exe icon extraction |
+| **base64** | Base64 encoding | For icon data transfer to frontend |
+| **tokio** | Async runtime | If async operations are needed |
+
+### 6.4 Dev Tools (Development Only)
+| Tool | Purpose |
+|------|---------|
+| **ESLint** | JavaScript/TypeScript linting |
+| **Prettier** | Code formatting |
+| **PostCSS** | CSS processing (required by TailwindCSS) |
+| **Autoprefixer** | CSS vendor prefixing |
+
+### 6.5 Forbidden Patterns
+- ❌ Do NOT install UI component libraries (MUI, Ant Design, Chakra UI, shadcn/ui) — we build custom components.
+- ❌ Do NOT install CSS-in-JS libraries (styled-components, Emotion) — we use TailwindCSS.
+- ❌ Do NOT install Redux, MobX, Recoil — we use Zustand.
+- ❌ Do NOT install Moment.js — we use date-fns.
+- ❌ Do NOT install Axios — use Tauri's built-in HTTP client or native `fetch`.
+- ❌ Do NOT install Electron or any Electron-related packages — we use Tauri.
+- ❌ Do NOT install any ORM (Prisma, TypeORM, Drizzle) — we use raw rusqlite on the Rust side.
+
+---
+
+## 7. Development Pipeline: Feature-by-Feature
 
 Every feature MUST be developed individually following this strict pipeline:
 
@@ -51,7 +139,7 @@ Every feature MUST be developed individually following this strict pipeline:
 
 ---
 
-## 2. Feature Spec Template
+## 8. Feature Spec Template
 
 When creating a new feature spec, use this template:
 
@@ -98,7 +186,7 @@ When creating a new feature spec, use this template:
 
 ---
 
-## 3. Project Directory Structure
+## 9. Project Directory Structure
 
 ```
 SuperIndividuaMyScreenLaptopApp/
@@ -136,7 +224,7 @@ SuperIndividuaMyScreenLaptopApp/
 
 ---
 
-## 4. Code Conventions
+## 10. Code Conventions
 
 ### 4.1 Language
 - All code, comments, variable names, and documentation MUST be written in **English**.
@@ -160,7 +248,7 @@ SuperIndividuaMyScreenLaptopApp/
 
 ---
 
-## 5. Feature Development Priority Order
+## 11. Feature Development Priority Order
 
 | Phase | Feature | Spec File |
 |-------|---------|-----------|
@@ -181,7 +269,7 @@ SuperIndividuaMyScreenLaptopApp/
 
 ---
 
-## 6. Important Reminders for AI Agents
+## 12. Important Reminders for AI Agents
 
 > **CAUTION:**
 > - **NEVER** skip writing a feature spec before coding.
