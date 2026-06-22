@@ -13,7 +13,8 @@ export interface BlockData {
   y: number;      // Grid-aligned Y coordinate (px)
   w: number;      // Width in px (multiple of GRID_CELL_SIZE)
   h: number;      // Height in px (multiple of GRID_CELL_SIZE)
-  data?: any;     // Block-specific config
+  zIndex?: number; // Layer index for overlapping blocks
+  data?: Record<string, unknown>; // Block-specific config
 }
 
 /** Props for the DemoBlock component */

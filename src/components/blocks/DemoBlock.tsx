@@ -1,8 +1,11 @@
 import React from 'react';
-import { GripVertical, Maximize2 } from 'lucide-react';
+import { GripVertical, Maximize2, X } from 'lucide-react';
 import type { DemoBlockProps } from '../../types';
+import { useWorkspaceStore } from '../../stores/workspaceStore';
 
-export const DemoBlock: React.FC<DemoBlockProps> = ({ label }) => {
+export const DemoBlock: React.FC<DemoBlockProps> = ({ id, label }) => {
+  const removeBlock = useWorkspaceStore((state) => state.removeBlock);
+
   return (
     <div
       className={[
@@ -29,9 +32,18 @@ export const DemoBlock: React.FC<DemoBlockProps> = ({ label }) => {
           size={14}
           className="dark:text-white/40 text-gray-400 flex-shrink-0"
         />
-        <span className="text-xs font-medium dark:text-white/70 text-gray-600 truncate">
+        <span className="text-xs font-medium dark:text-white/70 text-gray-600 truncate flex-1">
           {label}
         </span>
+        <button 
+          onClick={(e) => {
+            e.stopPropagation(); // prevent drag from triggering
+            removeBlock(id);
+          }}
+          className="p-1 rounded hover:bg-black/10 dark:hover:bg-white/10 text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors cursor-pointer"
+        >
+          <X size={14} />
+        </button>
       </div>
 
       {/* Block content area */}

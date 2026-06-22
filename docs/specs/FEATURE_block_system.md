@@ -11,7 +11,7 @@
 
 This feature establishes the core Block System for SuperIndividuaMyScreenLaptopApp. It introduces the ability to dynamically manage blocks (widgets) on the workspace grid, including dragging and custom resizing using React 19.
 
-**Why:** In Phase 1, we established a static dot-grid and placeholder demo blocks. Phase 2 brings the grid to life by allowing users to add, move, and freely resize blocks. Since traditional libraries like `react-rnd` are incompatible with React 19, this phase includes developing a custom, lightweight resizing mechanism.
+**Why:** In Phase 1, we established a static dot-grid and placeholder demo blocks. Phase 2 brings the grid to life by allowing users to add, move, and freely resize blocks. After evaluating the complexity of writing a custom 8-direction resize hook, we elected to retain React 18 and use `react-rnd`, disabling `React.StrictMode` to bypass known `findDOMNode` incompatibilities. This significantly accelerates development while providing a robust drag-and-resize experience.
 
 **Scope includes:**
 - Custom Resize hook (`useResize`) using native pointer events.
