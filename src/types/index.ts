@@ -3,7 +3,7 @@
 /** Theme mode */
 export type Theme = 'light' | 'dark';
 
-export type BlockType = 'demo' | 'clock' | 'system_monitor' | 'shortcut';
+export type BlockType = 'demo' | 'clock' | 'system_monitor' | 'shortcut' | 'pomodoro' | 'weather' | 'media' | 'sticky_note';
 
 /** Position, size and data of a block on the Bento grid */
 export interface BlockData {

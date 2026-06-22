@@ -4,6 +4,11 @@ import { useWorkspaceStore } from '../../stores/workspaceStore';
 import { DemoBlock } from '../blocks/DemoBlock';
 import { AppShortcutBlock } from '../blocks/AppShortcutBlock';
 import { FloatingGlassTaskbar } from '../taskbar/FloatingGlassTaskbar';
+import { SystemMonitorBlock } from '../blocks/SystemMonitorBlock';
+import { MediaControllerBlock } from '../blocks/MediaControllerBlock';
+import { WeatherBlock } from '../blocks/WeatherBlock';
+import { PomodoroBlock } from '../blocks/PomodoroBlock';
+import { StickyNoteBlock } from '../blocks/StickyNoteBlock';
 import { BlockData, GRID_CELL_SIZE, BLOCK_MIN_SIZE, ShortcutBlockData } from '../../types';
 
 import { DotGrid } from './DotGrid';
@@ -22,13 +27,23 @@ const BlockRenderer: React.FC<{ block: BlockData; onRemove: (id: string) => void
       const shortcutData = block.data as ShortcutBlockData['data'] || {};
       return (
         <AppShortcutBlock 
-          id={block.id} 
+          id={block.id}
           label={shortcutData.name || 'Shortcut'} 
           path={shortcutData.path}
           initialIconBase64={shortcutData.iconBase64}
         />
       );
     }
+    case 'system_monitor':
+      return <SystemMonitorBlock id={block.id} />;
+    case 'media':
+      return <MediaControllerBlock id={block.id} />;
+    case 'weather':
+      return <WeatherBlock id={block.id} />;
+    case 'pomodoro':
+      return <PomodoroBlock id={block.id} />;
+    case 'sticky_note':
+      return <StickyNoteBlock id={block.id} initialText={block.data?.text as string} />;
     default:
       return (
         <div className="relative w-full h-full bg-red-500/20 border border-red-500 flex flex-col items-center justify-center text-red-500 p-2 overflow-auto text-xs break-all group pointer-events-auto">
@@ -52,17 +67,6 @@ export const WorkspaceGrid: React.FC = () => {
   const bringToFront = useWorkspaceStore((state) => state.bringToFront);
   const addBlock = useWorkspaceStore((state) => state.addBlock);
   const removeBlock = useWorkspaceStore((state) => state.removeBlock);
-
-  const handleAddDemoBlock = () => {
-    addBlock({
-      type: 'demo',
-      x: 128,
-      y: 128,
-      w: 256,
-      h: 128,
-      data: { label: 'New Block ' + Math.floor(Math.random() * 100) }
-    });
-  };
 
   return (
     <div className="fixed inset-0 w-full h-full overflow-hidden">
@@ -111,20 +115,69 @@ export const WorkspaceGrid: React.FC = () => {
         <button 
           onClick={() => {
             addBlock({
+              type: 'system_monitor',
+              x: 128, y: 128, w: 256, h: 128,
+            });
+          }}
+          className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded shadow-lg backdrop-blur text-xs"
+        >
+          + Add System Monitor
+        </button>
+        <button 
+          onClick={() => {
+            addBlock({
+              type: 'weather',
+              x: 400, y: 128, w: 256, h: 128,
+            });
+          }}
+          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow-lg backdrop-blur text-xs"
+        >
+          + Add Weather
+        </button>
+        <button 
+          onClick={() => {
+            addBlock({
+              type: 'media',
+              x: 128, y: 280, w: 256, h: 128,
+            });
+          }}
+          className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded shadow-lg backdrop-blur text-xs"
+        >
+          + Add Media
+        </button>
+        <button 
+          onClick={() => {
+            addBlock({
+              type: 'pomodoro',
+              x: 400, y: 280, w: 256, h: 180,
+            });
+          }}
+          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow-lg backdrop-blur text-xs"
+        >
+          + Add Pomodoro
+        </button>
+        <button 
+          onClick={() => {
+            addBlock({
+              type: 'sticky_note',
+              x: 128, y: 440, w: 256, h: 256,
+            });
+          }}
+          className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded shadow-lg backdrop-blur text-xs"
+        >
+          + Add Sticky Note
+        </button>
+        <button 
+          onClick={() => {
+            addBlock({
               type: 'shortcut',
-              x: 128, y: 128, w: 128, h: 128,
+              x: 400, y: 440, w: 128, h: 128,
               data: { name: 'Notepad', path: 'C:\\Windows\\notepad.exe' }
             });
           }}
-          className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded shadow-lg backdrop-blur"
+          className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded shadow-lg backdrop-blur text-xs"
         >
-          + Add Shortcut (Notepad)
-        </button>
-        <button 
-          onClick={handleAddDemoBlock}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow-lg backdrop-blur"
-        >
-          + Add Block
+          + Add Shortcut
         </button>
       </div>
     </div>

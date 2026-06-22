@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 pub mod system;
+pub mod monitor;
+pub mod media;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ThemePayload {

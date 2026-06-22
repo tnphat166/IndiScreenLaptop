@@ -28,7 +28,10 @@ windows = { version = "0.58", features = [
     "Win32_UI_WindowsAndMessaging",
     "Win32_System_Registry",
     "Win32_Graphics_Gdi",
-    "Win32_UI_Shell"
+    "Win32_UI_Shell",
+    "Win32_UI_Input_KeyboardAndMouse"
 ] }
 tauri-plugin-store = "2"
 windows-icons = "0.2.1"
+sysinfo = "0.30"
+tokio = { version = "1.0", features = ["full"] }

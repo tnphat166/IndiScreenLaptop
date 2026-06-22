@@ -14,8 +14,22 @@ pub fn run() {
             commands::system::launch_shortcut,
             commands::system::extract_icon,
             commands::system::get_running_apps,
+            commands::monitor::get_system_stats,
+            commands::media::get_current_media_info,
+            commands::media::media_play_pause,
+            commands::media::media_next,
+            commands::media::media_prev,
         ])
         .setup(|app| {
+            app.manage(commands::monitor::SystemMonitorState(std::sync::Mutex::new(sysinfo::System::new_all())));
+            app.manage(commands::media::MediaState(std::sync::Mutex::new(commands::media::MediaInfo {
+                title: "Unknown".to_string(),
+                artist: "Unknown".to_string(),
+                album_art_url: None,
+                is_playing: false,
+                last_updated: 0,
+            })));
+            
             // Start the theme watcher background thread
             let app_handle = app.handle().clone();
             services::theme::start_theme_watcher(app_handle);
