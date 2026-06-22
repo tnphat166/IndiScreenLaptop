@@ -3,13 +3,17 @@
 /** Theme mode */
 export type Theme = 'light' | 'dark';
 
-/** Position and size of a block on the Bento grid */
-export interface BlockPosition {
+export type BlockType = 'demo' | 'clock' | 'system_monitor' | 'shortcut';
+
+/** Position, size and data of a block on the Bento grid */
+export interface BlockData {
   id: string;
+  type: BlockType;
   x: number;      // Grid-aligned X coordinate (px)
   y: number;      // Grid-aligned Y coordinate (px)
-  width: number;  // Width in px (multiple of GRID_CELL_SIZE)
-  height: number; // Height in px (multiple of GRID_CELL_SIZE)
+  w: number;      // Width in px (multiple of GRID_CELL_SIZE)
+  h: number;      // Height in px (multiple of GRID_CELL_SIZE)
+  data?: any;     // Block-specific config
 }
 
 /** Props for the DemoBlock component */

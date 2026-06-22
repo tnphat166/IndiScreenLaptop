@@ -1,27 +1,10 @@
 import React from 'react';
-import { useDraggable } from '@dnd-kit/core';
 import { GripVertical, Maximize2 } from 'lucide-react';
 import type { DemoBlockProps } from '../../types';
 
-// TODO: placeholder — refactor in Phase 2 when implementing full block CRUD system
-
-/**
- * DemoBlock — A placeholder glassmorphic card for testing drag & drop.
- *
- * Features:
- * - Glassmorphic card with rounded corners
- * - Drag handle icon (top-left)
- * - Visual resize indicator (bottom-right, visual only — resize logic in Phase 2)
- * - Smooth drag animation with slight scale-up when grabbed
- */
-export const DemoBlock: React.FC<DemoBlockProps> = ({ id, label }) => {
-  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
-    id,
-  });
-
+export const DemoBlock: React.FC<DemoBlockProps> = ({ label }) => {
   return (
     <div
-      ref={setNodeRef}
       className={[
         'w-full h-full',
         // Glassmorphism - Dark mode
@@ -32,23 +15,14 @@ export const DemoBlock: React.FC<DemoBlockProps> = ({ id, label }) => {
         'backdrop-blur-[16px] border rounded-block shadow-glass',
         // Layout
         'flex flex-col relative overflow-hidden',
-        // Transitions
-        'transition-all duration-200',
-        // Hover glow effect
-        'hover:shadow-glass-hover',
-        'hover:dark:bg-white/10 hover:bg-black/[0.06]',
-        // Dragging state
-        isDragging ? 'opacity-50' : 'opacity-100',
       ].join(' ')}
     >
       {/* Drag Handle — top area */}
       <div
-        {...listeners}
-        {...attributes}
         className={[
           'flex items-center gap-2 px-3 py-2',
           'cursor-grab active:cursor-grabbing',
-          'select-none',
+          'select-none drag-handle', // Class drag-handle dùng cho react-rnd
         ].join(' ')}
       >
         <GripVertical
@@ -61,14 +35,15 @@ export const DemoBlock: React.FC<DemoBlockProps> = ({ id, label }) => {
       </div>
 
       {/* Block content area */}
-      <div className="flex-1 px-3 pb-2">
+      <div className="flex-1 px-3 pb-2 select-none">
         <p className="text-2xs dark:text-white/30 text-gray-400">
-          Drag to reposition
+          Drag header to move.<br/>
+          Drag edges/corners to resize.
         </p>
       </div>
 
-      {/* Resize indicator — visual only, resize logic in Phase 2 */}
-      <div className="absolute bottom-1 right-1 dark:text-white/20 text-gray-300">
+      {/* Resize indicator — purely visual */}
+      <div className="absolute bottom-1 right-1 dark:text-white/20 text-gray-300 pointer-events-none">
         <Maximize2 size={10} />
       </div>
     </div>

@@ -25,13 +25,7 @@ function App() {
    * Interactive elements (blocks, buttons) stop propagation to prevent
    * click-through from being enabled while interacting with UI.
    */
-  const enableClickThrough = useCallback(async () => {
-    try {
-      await invoke('set_click_through', { label: 'main', enabled: true });
-    } catch (error) {
-      console.warn('Failed to enable click-through:', error);
-    }
-  }, []);
+  // enableClickThrough removed as it permanently locks the UI
 
   const disableClickThrough = useCallback(async () => {
     try {
@@ -42,16 +36,15 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Start with click-through enabled (transparent overlay mode)
-    enableClickThrough();
-  }, [enableClickThrough]);
+    // Start with click-through DISABLED so the window captures clicks.
+    // If WebView2 natively supports pixel-level alpha hit-testing, transparent areas will pass through.
+    disableClickThrough();
+  }, [disableClickThrough]);
 
   return (
     <div
       className="fixed inset-0 w-full h-full"
       style={{ background: 'transparent' }}
-      onMouseEnter={disableClickThrough}
-      onMouseLeave={enableClickThrough}
     >
       <WorkspaceGrid />
     </div>
