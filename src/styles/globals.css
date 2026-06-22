@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base Reset ──────────────────────────────────────── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Hide scrollbars globally */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Selection styling */
+  ::selection {
+    background: rgba(99, 102, 241, 0.3);
+    color: inherit;
+  }
+}
+
+/* ── Glassmorphism Component Classes ─────────────────── */
+@layer components {
+  /* Dark mode glass panel */
+  .glass-panel {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-glass;
+    transition: all 300ms ease;
+  }
+
+  .glass-panel:hover {
+    @apply shadow-glass-hover;
+    box-shadow:
+      0 8px 32px 0 rgba(0, 0, 0, 0.25),
+      inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+  }
+
+  /* Light mode glass panel */
+  .glass-panel-light {
+    @apply bg-black/5 backdrop-blur-xl border border-black/5 shadow-lg;
+    transition: all 300ms ease;
+  }
+
+  .glass-panel-light:hover {
+    box-shadow:
+      0 8px 32px 0 rgba(0, 0, 0, 0.15),
+      inset 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  /* Glass input field */
+  .glass-input {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-lg
+           px-3 py-2 text-white placeholder-white/40
+           outline-none transition-all duration-200;
+  }
+
+  .glass-input:focus {
+    @apply border-white/25 bg-white/10 ring-1 ring-white/10;
+  }
+
+  /* Light mode glass input */
+  .glass-input-light {
+    @apply bg-black/5 backdrop-blur-md border border-black/5 rounded-lg
+           px-3 py-2 text-gray-900 placeholder-gray-400
+           outline-none transition-all duration-200;
+  }
+
+  .glass-input-light:focus {
+    @apply border-black/15 bg-black/10 ring-1 ring-black/5;
+  }
+}
+
+/* ── Utility Classes ─────────────────────────────────── */
+@layer utilities {
+  /* Theme transition for smooth dark/light mode switching */
+  .theme-transition {
+    transition:
+      background-color 300ms ease,
+      border-color 300ms ease,
+      color 300ms ease,
+      box-shadow 300ms ease;
+  }
+
+  /* Drag handle cursor */
+  .cursor-grab-active {
+    cursor: grabbing !important;
+  }
+
+  /* Block drag scale animation */
+  .block-dragging {
+    transform: scale(1.02);
+    opacity: 0.9;
+    z-index: 9999;
+    transition: transform 150ms ease, opacity 150ms ease;
+  }
+}
