@@ -12,14 +12,21 @@ const DEMO_LABELS: Record<string, string> = {
   '3': 'Quick Notes',
 };
 
-const BlockRenderer: React.FC<{ block: BlockData }> = ({ block }) => {
+const BlockRenderer: React.FC<{ block: BlockData; onRemove: (id: string) => void }> = ({ block, onRemove }) => {
   switch (block.type) {
     case 'demo':
-      return <DemoBlock id={block.id} label={block.data?.label || DEMO_LABELS[block.id] || 'Demo Block'} />;
+      return <DemoBlock id={block.id} label={String(block.data?.label || DEMO_LABELS[block.id] || 'Demo Block')} />;
     default:
       return (
-        <div className="w-full h-full bg-red-500/20 border border-red-500 flex items-center justify-center text-red-500">
-          Unknown Block Type
+        <div className="relative w-full h-full bg-red-500/20 border border-red-500 flex flex-col items-center justify-center text-red-500 p-2 overflow-auto text-xs break-all group pointer-events-auto">
+          <button 
+            className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 bg-red-500 text-white rounded px-2 py-1 hover:bg-red-600 cursor-pointer z-50 transition-opacity"
+            onPointerDown={(e) => { e.stopPropagation(); onRemove(block.id); }}
+          >
+            Close
+          </button>
+          <b>Unknown Block Type: {String(block.type)}</b>
+          <pre className="mt-2 text-[10px]">{JSON.stringify(block, null, 2)}</pre>
         </div>
       );
   }
@@ -31,6 +38,7 @@ export const WorkspaceGrid: React.FC = () => {
   const updateBlockSize = useWorkspaceStore((state) => state.updateBlockSize);
   const bringToFront = useWorkspaceStore((state) => state.bringToFront);
   const addBlock = useWorkspaceStore((state) => state.addBlock);
+  const removeBlock = useWorkspaceStore((state) => state.removeBlock);
 
   const handleAddDemoBlock = () => {
     addBlock({
@@ -77,7 +85,7 @@ export const WorkspaceGrid: React.FC = () => {
           style={{ zIndex: block.zIndex || 1 }}
         >
           <div className="w-full h-full relative group">
-            <BlockRenderer block={block} />
+            <BlockRenderer block={block} onRemove={removeBlock} />
           </div>
         </Rnd>
       ))}

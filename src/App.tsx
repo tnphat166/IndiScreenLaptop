@@ -2,6 +2,7 @@ import { useEffect, useCallback } from 'react';
 import { invoke } from '@tauri-apps/api/core';
 import { WorkspaceGrid } from './components/workspace/WorkspaceGrid';
 import { useSystemTheme } from './hooks/useSystemTheme';
+import { useWorkspaceStore } from './stores/workspaceStore';
 import './styles/globals.css';
 
 /**
@@ -35,11 +36,21 @@ function App() {
     }
   }, []);
 
+  const { isLoaded, initializeStore } = useWorkspaceStore();
+
+  useEffect(() => {
+    initializeStore();
+  }, [initializeStore]);
+
   useEffect(() => {
     // Start with click-through DISABLED so the window captures clicks.
     // If WebView2 natively supports pixel-level alpha hit-testing, transparent areas will pass through.
     disableClickThrough();
   }, [disableClickThrough]);
+
+  if (!isLoaded) {
+    return null; // or a loading spinner
+  }
 
   return (
     <div

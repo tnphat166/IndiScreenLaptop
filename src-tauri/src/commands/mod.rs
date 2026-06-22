@@ -34,11 +34,12 @@ pub fn set_click_through(
     {
         use windows::Win32::Foundation::HWND;
         use windows::Win32::UI::WindowsAndMessaging::{
-            GetWindowLongPtrW, SetWindowLongPtrW, GWL_EXSTYLE,
-            WS_EX_LAYERED, WS_EX_TRANSPARENT,
+            GetWindowLongPtrW, SetWindowLongPtrW, GWL_EXSTYLE, WS_EX_LAYERED, WS_EX_TRANSPARENT,
         };
 
-        let raw_hwnd = window.hwnd().map_err(|e| format!("Failed to get HWND for '{}': {}", label, e))?;
+        let raw_hwnd = window
+            .hwnd()
+            .map_err(|e| format!("Failed to get HWND for '{}': {}", label, e))?;
         let hwnd = HWND(raw_hwnd.0);
 
         unsafe {
@@ -54,7 +55,11 @@ pub fn set_click_through(
             SetWindowLongPtrW(hwnd, GWL_EXSTYLE, new_style);
         }
 
-        log::info!("Click-through {} for window '{}'", if enabled { "enabled" } else { "disabled" }, label);
+        log::info!(
+            "Click-through {} for window '{}'",
+            if enabled { "enabled" } else { "disabled" },
+            label
+        );
         Ok(())
     }
 

@@ -6,6 +6,7 @@ use tauri::Manager;
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
             commands::get_system_theme,
@@ -22,7 +23,9 @@ pub fn run() {
                 if let Some(window) = app.get_webview_window("main") {
                     apply_overlay_styles(&window);
                 } else {
-                    eprintln!("[setup] Warning: could not find 'main' window to apply overlay styles");
+                    eprintln!(
+                        "[setup] Warning: could not find 'main' window to apply overlay styles"
+                    );
                 }
             }
 

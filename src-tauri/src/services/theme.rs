@@ -9,9 +9,9 @@ const THEME_REG_VALUE: &str = "AppsUseLightTheme";
 /// Returns None if the registry key could not be read.
 #[cfg(windows)]
 pub fn read_system_theme() -> Option<String> {
-    use windows::Win32::System::Registry::*;
     use windows::core::PCWSTR;
     use windows::Win32::Foundation::ERROR_SUCCESS;
+    use windows::Win32::System::Registry::*;
 
     unsafe {
         let mut hkey = HKEY::default();
@@ -77,9 +77,9 @@ pub fn start_theme_watcher<R: tauri::Runtime>(app_handle: tauri::AppHandle<R>) {
     use tauri::Emitter;
 
     std::thread::spawn(move || {
-        use windows::Win32::System::Registry::*;
         use windows::core::PCWSTR;
         use windows::Win32::Foundation::ERROR_SUCCESS;
+        use windows::Win32::System::Registry::*;
 
         let subkey: Vec<u16> = THEME_REG_SUBKEY
             .encode_utf16()
@@ -97,7 +97,10 @@ pub fn start_theme_watcher<R: tauri::Runtime>(app_handle: tauri::AppHandle<R>) {
             );
 
             if status != ERROR_SUCCESS {
-                eprintln!("[theme-watcher] Failed to open registry key for watching: {:?}", status);
+                eprintln!(
+                    "[theme-watcher] Failed to open registry key for watching: {:?}",
+                    status
+                );
                 return;
             }
         }
@@ -110,15 +113,18 @@ pub fn start_theme_watcher<R: tauri::Runtime>(app_handle: tauri::AppHandle<R>) {
             let notify_result = unsafe {
                 RegNotifyChangeKeyValue(
                     hkey,
-                    false, // don't watch subtree
+                    false,                      // don't watch subtree
                     REG_NOTIFY_CHANGE_LAST_SET, // watch value changes
-                    None,  // no event handle — blocks synchronously
-                    false, // synchronous
+                    None,                       // no event handle — blocks synchronously
+                    false,                      // synchronous
                 )
             };
 
             if notify_result != ERROR_SUCCESS {
-                eprintln!("[theme-watcher] RegNotifyChangeKeyValue failed: {:?}", notify_result);
+                eprintln!(
+                    "[theme-watcher] RegNotifyChangeKeyValue failed: {:?}",
+                    notify_result
+                );
                 // Small delay before retrying to avoid tight loop on persistent errors
                 std::thread::sleep(std::time::Duration::from_secs(5));
                 continue;
