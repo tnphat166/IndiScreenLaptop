@@ -18,7 +18,8 @@ This feature establishes the core Block System for SuperIndividuaMyScreenLaptopA
 - Seamless integration with `@dnd-kit` for drag-and-drop.
 - Centralized `workspaceStore` (Zustand) for block state management.
 - Standardized Block Data Model.
-- In-memory data storage (persistence is deferred to Phase 3).
+- In-memory data storage.
+  > **[IMPORTANT] Phase 3 hand-off:** Block persistence (saving positions, sizes, and widget configurations to a local database) is explicitly out-of-scope for Phase 2 and is the primary objective of Phase 3. See `FEATURE_persistence_phase3.md` for the upcoming implementation details.
 
 **Scope excludes:**
 - SQLite database / File System persistence.
