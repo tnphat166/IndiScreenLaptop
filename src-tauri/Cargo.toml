@@ -27,7 +27,8 @@ windows = { version = "0.58", features = [
     "Win32_Foundation",
     "Win32_UI_WindowsAndMessaging",
     "Win32_System_Registry",
-    "Win32_Graphics_Gdi"
+    "Win32_Graphics_Gdi",
+    "Win32_UI_Shell"
 ] }
 tauri-plugin-store = "2"
-
+windows-icons = "0.2.1"

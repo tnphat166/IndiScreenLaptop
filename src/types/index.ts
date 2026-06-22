@@ -24,6 +24,23 @@ export interface DemoBlockProps {
   icon?: string;
 }
 
+/** Specific data for shortcut blocks */
+export interface ShortcutBlockData extends BlockData {
+  type: 'shortcut';
+  data?: {
+    path?: string;
+    iconBase64?: string;
+    name?: string;
+  };
+}
+
+/** Represents a native running application from Rust */
+export interface RunningApp {
+  title: String;
+  path: String;
+  hwnd: number;
+}
+
 /** Theme event payload from Rust backend */
 export interface ThemeChangedPayload {
   theme: Theme;

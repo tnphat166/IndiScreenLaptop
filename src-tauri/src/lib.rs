@@ -11,6 +11,9 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             commands::get_system_theme,
             commands::set_click_through,
+            commands::system::launch_shortcut,
+            commands::system::extract_icon,
+            commands::system::get_running_apps,
         ])
         .setup(|app| {
             // Start the theme watcher background thread

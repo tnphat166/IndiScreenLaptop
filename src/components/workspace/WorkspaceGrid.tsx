@@ -2,7 +2,9 @@ import React from 'react';
 import { Rnd } from 'react-rnd';
 import { useWorkspaceStore } from '../../stores/workspaceStore';
 import { DemoBlock } from '../blocks/DemoBlock';
-import { BlockData, GRID_CELL_SIZE, BLOCK_MIN_SIZE } from '../../types';
+import { AppShortcutBlock } from '../blocks/AppShortcutBlock';
+import { FloatingGlassTaskbar } from '../taskbar/FloatingGlassTaskbar';
+import { BlockData, GRID_CELL_SIZE, BLOCK_MIN_SIZE, ShortcutBlockData } from '../../types';
 
 import { DotGrid } from './DotGrid';
 
@@ -16,6 +18,17 @@ const BlockRenderer: React.FC<{ block: BlockData; onRemove: (id: string) => void
   switch (block.type) {
     case 'demo':
       return <DemoBlock id={block.id} label={String(block.data?.label || DEMO_LABELS[block.id] || 'Demo Block')} />;
+    case 'shortcut': {
+      const shortcutData = block.data as ShortcutBlockData['data'] || {};
+      return (
+        <AppShortcutBlock 
+          id={block.id} 
+          label={shortcutData.name || 'Shortcut'} 
+          path={shortcutData.path}
+          initialIconBase64={shortcutData.iconBase64}
+        />
+      );
+    }
     default:
       return (
         <div className="relative w-full h-full bg-red-500/20 border border-red-500 flex flex-col items-center justify-center text-red-500 p-2 overflow-auto text-xs break-all group pointer-events-auto">
@@ -90,8 +103,23 @@ export const WorkspaceGrid: React.FC = () => {
         </Rnd>
       ))}
 
-      {/* Temporary Add Block Button */}
-      <div className="fixed bottom-6 right-6 z-[9999]">
+      {/* Floating Taskbar */}
+      <FloatingGlassTaskbar />
+
+      {/* Temporary Add Block Buttons */}
+      <div className="fixed bottom-6 right-6 z-[9999] flex flex-col gap-2">
+        <button 
+          onClick={() => {
+            addBlock({
+              type: 'shortcut',
+              x: 128, y: 128, w: 128, h: 128,
+              data: { name: 'Notepad', path: 'C:\\Windows\\notepad.exe' }
+            });
+          }}
+          className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded shadow-lg backdrop-blur"
+        >
+          + Add Shortcut (Notepad)
+        </button>
         <button 
           onClick={handleAddDemoBlock}
           className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow-lg backdrop-blur"
